@@ -10,7 +10,7 @@ namespace RapidPay.Services
     public interface ICardsService
     {
         Task<bool> CreateCard(CardsDto cardsDTO);
-        Task<bool> Pay(CardsDto cardsDTO);
-        Task<decimal> GetCardBalance(CardsDto cardsDTO);
+        Task<bool> Pay(int cardNumber);
+        Task<decimal> GetCardBalance(int cardNumber);
     }
 }

@@ -25,47 +25,16 @@ namespace RapidPay.API.Controllers
            return Ok(await _cardsService.CreateCard(cardsDto));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Pay(CardsDto cardsDto)
+        [HttpPut]
+        public async Task<IActionResult> Pay(int cardNumber)
         {
-            return Ok(await _cardsService.CreateCard(cardsDto));
+            return Ok(await _cardsService.Pay(cardNumber));
         }
 
-        // Pay endpoint
-        //public void Pay(string cardNumber, decimal amount)
-        //{
-        //    if (_cards.TryGetValue(cardNumber, out var card))
-        //    {
-        //        decimal fee = _ufeService.GetFee();
-        //        decimal totalAmount = amount + fee;
-        //        if (card.Balance >= totalAmount)
-        //        {
-        //            card.Balance -= totalAmount;
-        //            Console.WriteLine($"Payment successful. Amount: {amount}, Fee: {fee}, Card Balance: {card.Balance}");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Insufficient funds.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Card not found.");
-        //    }
-        //}
-
-        // Get card balance endpoint
-        //public decimal GetCardBalance(string cardNumber)
-        //{
-        //    if (_cards.TryGetValue(cardNumber, out var card))
-        //    {
-        //        return card.Balance;
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Card not found.");
-        //        return 0.0m;
-        //    }
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetBalance(int cardNumber)
+        {
+            return Ok(await _cardsService.GetCardBalance(cardNumber));
+        }
     }
 }

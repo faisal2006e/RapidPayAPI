@@ -25,7 +25,6 @@ namespace RapidPay.Services
             Cards cards = new Cards();
             cards.CardNumber = cardsDTO.CardNumber;
             cards.CardBalance = cardsDTO.CardBalance;
-            cards.LastBalanceUpdateDate = cardsDTO.LastBalanceUpdateDate;
             cards.CreatedDate = DateTime.Now;
 
             _context.Cards.Add(cards);
@@ -34,15 +33,15 @@ namespace RapidPay.Services
             return  result;
         }
 
-        public async Task<bool> Pay(CardsDto cardsDTO)
+        public async Task<bool> Pay(int cardNumber)
         {
             bool result = false;
             decimal fee = _ufeService.GetFee();
-            Cards cards = await GetCard(cardsDTO);
-            decimal totalAmount = cardsDTO.CardBalance + fee;
+            Cards cards = await GetCard(cardNumber);
+            decimal totalAmount = cards.CardBalance + fee;
             cards.CardBalance = totalAmount;
 
-            cards.LastBalanceUpdateDate = cardsDTO.LastBalanceUpdateDate;
+            cards.LastBalanceUpdateDate = DateTime.Now;
            
             _context.Cards.Update(cards);
             _context.SaveChanges();
@@ -50,15 +49,15 @@ namespace RapidPay.Services
             return result;
         }
 
-        public async Task<decimal> GetCardBalance(CardsDto cardsDTO)
+        public async Task<decimal> GetCardBalance(int cardNumber)
         {
-            var card = await GetCard(cardsDTO);
+            var card = await GetCard(cardNumber);
             return card.CardBalance;
         }
 
-        public async Task<Cards> GetCard(CardsDto cardsDTO)
+        public async Task<Cards> GetCard(int cardNumber)
         {
-            return _context.Cards.FirstOrDefault(x => x.CardNumber == cardsDTO.CardNumber);
+            return _context.Cards.FirstOrDefault(x => x.CardNumber == cardNumber);
         }
     }
 }
